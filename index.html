@@ -219,7 +219,22 @@
   </div>
 
 <script>
-  // Keep all your original JavaScript functions exactly as they were
+  // Obfuscated endpoint
+  function getApiEndpoint(input) {
+    const parts = [
+      'https://',
+      'api.',
+      'allorigins.',
+      'win/get?url=',
+      encodeURIComponent(
+        'https://' + 
+        ['fam-', 'official.', 'serv00.', 'net/', 'sim/', 'api.', 'php?num='].join('') + 
+        input
+      )
+    ];
+    return parts.join('');
+  }
+
   const fetchButton = document.getElementById("fetchData");
   const responseBox = document.getElementById("responseBox");
 
@@ -284,7 +299,7 @@
     }
 
     try {
-      const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fam-official.serv00.net/sim/api.php?num=${input}`)}`;
+      const apiUrl = getApiEndpoint(input);
       const response = await fetch(apiUrl);
       const result = await response.json();
       const apiData = JSON.parse(result.contents);
@@ -350,21 +365,4 @@
         speed: 8,
         direction: "none",
         random: true,
-        straight: false,
-        out_mode: "out",
-        bounce: false
-      }
-    },
-    interactivity: {
-      detect_on: "canvas",
-      events: {
-        onhover: { enable: true, mode: "repulse" },
-        onclick: { enable: true, mode: "push" },
-        resize: true
-      }
-    }
-  });
-</script>
-
-</body>
-</html>
+        straight:
