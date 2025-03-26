@@ -131,6 +131,15 @@
       box-shadow: 0 5px 25px rgba(61, 90, 241, 0.4);
     }
 
+    .btn-whatsapp {
+      background: linear-gradient(45deg, #25D366, #128C7E);
+      margin-top: 2rem;
+    }
+
+    .btn-whatsapp:hover {
+      box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4);
+    }
+
     .response-box {
       background: rgba(18, 36, 64, 0.8);
       padding: 1.5rem;
@@ -216,10 +225,15 @@
     <button id="fetchData" class="btn">Search</button>
 
     <div id="responseBox" class="response-box"></div>
+
+    <!-- WhatsApp Channel Button -->
+    <button id="whatsappBtn" class="btn btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Join Our WhatsApp Channel
+    </button>
   </div>
 
 <script>
-  // Obfuscated endpoint
+  // Obfuscated API endpoint
   function getApiEndpoint(input) {
     const parts = [
       'https://',
@@ -237,6 +251,12 @@
 
   const fetchButton = document.getElementById("fetchData");
   const responseBox = document.getElementById("responseBox");
+  const whatsappBtn = document.getElementById("whatsappBtn");
+
+  // WhatsApp Channel Redirect
+  whatsappBtn.addEventListener("click", function() {
+    window.location.href = "https://whatsapp.com/channel/0029Vb6uz80J93wev2vq8O0e";
+  });
 
   fetchButton.addEventListener("click", async () => {
     let input = document.getElementById("searchInput").value.trim();
@@ -365,4 +385,21 @@
         speed: 8,
         direction: "none",
         random: true,
-        straight:
+        straight: false,
+        out_mode: "out",
+        bounce: false
+      }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: {
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" },
+        resize: true
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
