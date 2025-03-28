@@ -6,7 +6,7 @@
   <title>꯱ystem~ׅ꯱poiler DB</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Exo+2:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
@@ -15,6 +15,78 @@
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
   <style>
+    /* Preloader Styles */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .preloader-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 10s linear infinite;
+    }
+    
+    .preloader-text {
+      font-family: 'Share Tech Mono', monospace;
+      color: #00ffd5;
+      text-shadow: 0 0 10px #00ffd5;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .preloader-progress {
+      width: 300px;
+      height: 4px;
+      background: rgba(0, 255, 213, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .preloader-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00ffd5, #00ff88);
+      box-shadow: 0 0 10px #00ffd5;
+      transition: width 0.3s ease;
+    }
+    
+    .preloader-scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(180deg, 
+        rgba(0, 255, 213, 0) 0%,
+        rgba(0, 255, 213, 1) 50%,
+        rgba(0, 255, 213, 0) 100%);
+      animation: scan 2s infinite;
+      box-shadow: 0 0 15px #00ffd5;
+      z-index: 1;
+    }
+    
+    /* Main Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -23,7 +95,7 @@
 
     html, body {
       font-family: 'Chakra Petch', sans-serif;
-      background: #0a192f;
+      background: #000;
       color: #c0caf5;
       height: 100%;
       width: 100%;
@@ -34,7 +106,7 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #0a192f 0%, #1a365f 100%);
+      background: radial-gradient(ellipse at center, #0a192f 0%, #000000 100%);
       z-index: -1;
     }
 
@@ -60,7 +132,7 @@
     }
 
     .container {
-      background: rgba(10, 25, 47, 0.9);
+      background: rgba(10, 25, 47, 0.85);
       border: 1px solid rgba(0, 243, 255, 0.3);
       padding: 2rem;
       width: 90%;
@@ -72,6 +144,16 @@
       border-radius: 8px;
       backdrop-filter: blur(10px);
       box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.5s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .input-box {
@@ -84,11 +166,13 @@
       margin: 1rem 0;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 4px;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .input-box:focus {
       border-color: #00f3ff;
       box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+      outline: none;
     }
 
     .btn {
@@ -104,6 +188,9 @@
       position: relative;
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .btn::after {
@@ -174,6 +261,7 @@
       margin: 0.5rem 0;
       border-left: 3px solid #00f3ff;
       animation: dataEntry 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Share Tech Mono', monospace;
     }
 
     @keyframes dataEntry {
@@ -201,6 +289,33 @@
       100% { top: 110%; opacity: 0; }
     }
 
+    .not-found {
+      color: #ff5555;
+      font-weight: bold;
+    }
+
+    .binary-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      opacity: 0.2;
+    }
+
+    .binary-digit {
+      position: absolute;
+      color: #00ffd5;
+      font-family: 'Share Tech Mono', monospace;
+      animation: binaryFall linear infinite;
+    }
+
+    @keyframes binaryFall {
+      to { transform: translateY(100vh); }
+    }
+
     @media (max-width: 768px) {
       .container {
         width: 95%;
@@ -210,13 +325,33 @@
       .cyber-header {
         font-size: 2rem;
       }
+      
+      .preloader-text {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- Hollywood-style Preloader -->
+  <div id="preloader">
+    <div class="preloader-grid"></div>
+    <div class="preloader-scanline"></div>
+    <div class="preloader-text">INITIALIZING SYSTEM SPOILER DB</div>
+    <div class="preloader-text">SECURE CONNECTION ESTABLISHED</div>
+    <div class="preloader-progress">
+      <div class="preloader-progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- Binary Rain Effect -->
+  <div class="binary-rain" id="binaryRain"></div>
+
+  <!-- Particle.js Background -->
   <div id="particles-js"></div>
 
+  <!-- Main Content -->
   <div class="container">
     <h1 class="cyber-header">꯱ystem~ׅ꯱poiler DB</h1>
     <p>Owners Database 2000-2019 100% accuracy</p>
@@ -233,6 +368,49 @@
   </div>
 
 <script>
+  // Preloader Simulation
+  window.addEventListener('load', function() {
+    const progressBar = document.getElementById('progressBar');
+    const preloader = document.getElementById('preloader');
+    const binaryRain = document.getElementById('binaryRain');
+    
+    // Create binary rain effect
+    function createBinaryRain() {
+      const digits = '01';
+      const columns = Math.floor(window.innerWidth / 20);
+      
+      for (let i = 0; i < columns; i++) {
+        const digit = document.createElement('div');
+        digit.className = 'binary-digit';
+        digit.textContent = digits.charAt(Math.floor(Math.random() * digits.length));
+        digit.style.left = `${(i * 20) + Math.random() * 10}px`;
+        digit.style.animationDuration = `${5 + Math.random() * 10}s`;
+        digit.style.animationDelay = `${Math.random() * 5}s`;
+        digit.style.opacity = Math.random();
+        binaryRain.appendChild(digit);
+      }
+    }
+    
+    createBinaryRain();
+    
+    // Simulate loading progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      progressBar.style.width = `${Math.min(progress, 100)}%`;
+      
+      if (progress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          preloader.style.opacity = '0';
+          setTimeout(() => {
+            preloader.style.display = 'none';
+          }, 500);
+        }, 500);
+      }
+    }, 200);
+  });
+
   // Obfuscated API endpoint
   function getApiEndpoint(input) {
     const parts = [
@@ -280,7 +458,7 @@
     }
 
     input = formatPhoneNumber(input);
-    startSearch(input);
+    await startSearch(input);
   });
 
   function isCNIC(input) {
@@ -304,31 +482,48 @@
     startSearch(cnic);
   }
 
-  async function startSearch(input) {
-    const loadingMessages = [
-      "Initializing your target search protocol...",
-      "Bypassing security firewalls...",
-      "Accessing encrypted data clusters...",
-      "Decrypting classified information...",
-      "Finalizing data acquisition..."
-    ];
-
-    for (let msg of loadingMessages) {
+  async function showLoadingMessages(messages) {
+    responseBox.innerHTML = '<div class="holo-grid"></div><div class="scan-beam"></div>';
+    for (let msg of messages) {
       responseBox.innerHTML += `<div class="data-stream">${msg}</div>`;
       await new Promise(resolve => setTimeout(resolve, 1500));
     }
+  }
 
+  async function startSearch(input) {
     try {
+      // First check if data exists
       const apiUrl = getApiEndpoint(input);
       const response = await fetch(apiUrl);
       const result = await response.json();
       const apiData = JSON.parse(result.contents);
 
       if (!apiData.data || apiData.data[0].Name.includes("Data Not Found")) {
-        responseBox.innerHTML = `<div class="data-stream">No records found</div>`;
+        // Show alternative messages when data is not found
+        const notFoundMessages = [
+          "Checking your Target in Databases...",
+          "Its taking time more then usual...",
+          "may be this will be not available...",
+          "may be the Data is Latest...",
+          "Finalizing data Test..."
+        ];
+        
+        await showLoadingMessages(notFoundMessages);
+        responseBox.innerHTML += `<div class="data-stream not-found">Data not Found</div>`;
         return;
       }
 
+      // If data exists, show original messages
+      const loadingMessages = [
+        "Initializing your target search protocol...",
+        "Bypassing security firewalls...",
+        "Accessing encrypted data clusters...",
+        "Decrypting classified information...",
+        "Finalizing data acquisition..."
+      ];
+      
+      await showLoadingMessages(loadingMessages);
+      
       window.apiData = apiData.data;
       showTargetList();
     } catch (error) {
@@ -366,13 +561,50 @@
   }
 </script>
 
-<!-- Updated Particle.js Config -->
+<!-- Enhanced Particle.js Config -->
 <script>
   particlesJS("particles-js", {
     particles: {
-      number: { value: 100 },
-      size: { value: 2 },
-      color: { value: "#3d5af1" },
+      number: { 
+        value: 150,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: { 
+        value: ["#00f3ff", "#3d5af1", "#ff00ff"]
+      },
+      shape: {
+        type: "circle",
+        stroke: {
+          width: 0,
+          color: "#000000"
+        },
+        polygon: {
+          nb_sides: 5
+        }
+      },
+      opacity: {
+        value: 0.5,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 1,
+          opacity_min: 0.1,
+          sync: false
+        }
+      },
+      size: {
+        value: 3,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 2,
+          size_min: 0.1,
+          sync: false
+        }
+      },
       line_linked: {
         enable: true,
         distance: 150,
@@ -382,22 +614,43 @@
       },
       move: {
         enable: true,
-        speed: 8,
+        speed: 6,
         direction: "none",
         random: true,
         straight: false,
         out_mode: "out",
-        bounce: false
+        bounce: false,
+        attract: {
+          enable: true,
+          rotateX: 600,
+          rotateY: 1200
+        }
       }
     },
     interactivity: {
       detect_on: "canvas",
       events: {
-        onhover: { enable: true, mode: "repulse" },
-        onclick: { enable: true, mode: "push" },
+        onhover: { 
+          enable: true, 
+          mode: "repulse" 
+        },
+        onclick: { 
+          enable: true, 
+          mode: "push" 
+        },
         resize: true
+      },
+      modes: {
+        repulse: {
+          distance: 100,
+          duration: 0.4
+        },
+        push: {
+          particles_nb: 4
+        }
       }
-    }
+    },
+    retina_detect: true
   });
 </script>
 
